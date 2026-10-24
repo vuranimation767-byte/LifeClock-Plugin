@@ -1,0 +1,96 @@
+# ─────────── LifeClock configuration ───────────
+# All time values are in SECONDS (86400 = 24h, 7200 = 2h, 18000 = 5h).
+# Commands accept duration strings like "45s", "90m", "2h", "1d" or plain seconds.
+# Everything ending in a string below is full MiniMessage.
+
+# New player starting pool.
+# Server owners: adjust this freely — 86400 = 24 hours, 172800 = 48 hours (any seconds value works).
+start-time: 86400        # 24h
+
+# Seconds deducted from a PvP victim's clock (a Time Clock item is dropped at their death spot)
+pvp-steal: 7200          # 2h
+
+# Seconds granted when a Time Clock item is consumed
+clock-value: 7200        # 2h
+
+# Seconds the revivalist pays from their own clock WHEN REVIVING (crafting the totem is free)
+sacrifice-cost: 18000    # 5h
+
+# Seconds granted to a revived player
+revive-time: 7200        # 2h
+
+# Time withdrawal: players convert their own clock into Time Clock items
+# (tradeable / droppable — consuming one rewinds exactly what it says).
+# The clock must stay above 0: withdrawing your last second is refused.
+withdraw:
+  # /withdraw (no amount) opens a menu with these presets, in seconds. Max 7 buttons fit.
+  presets: [900, 1800, 3600, 7200, 18000]
+  gui-title: "<bold><dark_purple>Withdraw Time</dark_purple></bold>"
+  dialog-title: "<gold><bold>Withdraw a Custom Amount</bold></gold>"
+  dialog-label: "<gray>Type the time, e.g.:</gray> <gold>2h30m</gold>"
+
+hud:
+  sidebar:
+    enabled: true
+    # Panel header, drawn in neutral gray above the numbers.
+    title: "TIME"
+    # %time% = the clock numbers (HH:MM:SS). Colors apply ONLY to the numbers:
+    # green >10h, yellow 5-10h, red <5h, flashing red/white <1h. Everything else stays gray.
+    format: "%time%"
+
+items:
+  time-clock:
+    material: CLOCK
+    name: "<gold><bold>Time Clock</bold></gold>"
+    lore:
+      - "<gray>Right-click to wind yourself back up:</gray>"
+      - "<gold>+2h on the clock</gold>"
+      - "<dark_gray>Taken, not earned.</dark_gray>"
+  revive-item:
+    material: TOTEM_OF_UNDYING
+    name: "<light_purple><bold>Revive Totem</bold></light_purple>"
+    lore:
+      - "<gray>Right-click to open the ghost</gray>"
+      - "<gray>selection menu.</gray>"
+      - "<red>Costs 5h of your own time on use.</red>"
+
+messages:
+  prefix: "<dark_gray>[<gold>LifeClock</gold>]</dark_gray> "
+
+  eliminated: "<dark_red>☠ %player%'s time ran out. They are a Ghost now.</dark_red>"
+  pvp-kill: "<gray>%victim% lost</gray> <red>%time%</red> <gray>to</gray> <red>%killer%</red><gray>. A Time Clock was dropped where they fell.</gray>"
+
+  gained-time: "<gray>You wound the clock: </gray><gold>+%time%</gold> <gray>(total</gray> <gold>%total%</gold><gray>)</gray>"
+  revived: "<light_purple>%reviver% revived %player% with a fresh pool of <gold>%time%</gold>!</light_purple>"
+
+  revive-insufficient: "<red>You need at least 5 hours on your clock to perform a revive!</red>"
+  revive-charge: "<gray>The ritual took </gray><red>%time%</red> <gray>(total: <gold>%total%</gold>)</gray>"
+  totem-lost: "<red>The Revive Totem wasn't found in your inventory anymore.</red>"
+  not-ghost: "<red>%player% is not a Ghost.</red>"
+
+  withdraw-done: "<gray>You wrapped</gray> <gold>%time%</gold> <gray>into a Time Clock (left:</gray> <gold>%total%</gold><gray>)</gray>"
+  withdraw-fail: "<red>Withdrawing <bold>%time%</bold> would empty your clock — you have <gold>%total%</gold>.<br>You must keep some time.</red>"
+  player-only: "<red>Only players can withdraw time.</red>"
+
+  gui:
+    title: "<bold><dark_purple>Select Ghost to Revive</dark_purple></bold>"
+    head-name: "<gold><bold>%player%</bold></gold>"
+    head-lore:
+      - "<gray>Status: Dead / Spectator</gray>"
+      - "<yellow>Click to revive for 5 Hours</yellow>"
+    search-name: "<cyan><bold>Search Player by Name</bold></cyan>"
+    # The compass opens a vanilla search screen (text field + Revive/Cancel buttons).
+    search-title: "<gold><bold>Search Ghost to Revive</bold></gold>"
+    search-label: "<gray>Type the ghost's exact name:</gray>"
+
+  ghost-reconnect: "<gray>You are a Ghost - your time has run out.</gray>"
+
+  usage: "<gold>Usage: /lifeclock add|remove|set <player> <time> | check <player> | revive <player></gold>"
+  player-not-found: "<red>No stored data for a player named %player%.</red>"
+  invalid-time: "<red>Can't read that time: '%input%'. Try 45s, 90m, 2h or plain seconds.</red>"
+
+  add-done: "<gray>Added <gold>%time%</gold> to %player% (total: <gold>%total%</gold>).</gray>"
+  remove-done: "<gray>Removed <gold>%time%</gold> from %player% (total: <gold>%total%</gold>).</gray>"
+  set-done: "<gray>Set %player%'s clock to <gold>%time%</gold>.</gray>"
+  check: "<gray>%player% has <bold>%time%</bold> left%ghost%</gray>"
+  revive-done: "<gray>Revived %player% with <gold>%time%</gold>.</gray>"

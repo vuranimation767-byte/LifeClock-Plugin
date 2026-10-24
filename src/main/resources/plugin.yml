@@ -1,0 +1,19 @@
+name: LifeClock
+version: 1.0.0
+main: dev.lifeclock.LifeClockPlugin
+api-version: '1.21'
+description: SMP where players live on borrowed time - steal it in PvP, lose it to death, revive with a sacrifice.
+
+commands:
+  lifeclock:
+    description: LifeClock admin commands
+    usage: /lifeclock add|remove|set <player> <time> | check <player> | revive <player>
+    permission: lifeclock.admin
+  withdraw:
+    description: Withdraw time from your own clock into a Time Clock item
+    usage: /withdraw <time> | /withdraw (opens the selection menu)
+
+permissions:
+  lifeclock.admin:
+    default: op
+    description: Full access to /lifeclock
